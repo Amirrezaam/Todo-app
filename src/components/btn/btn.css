@@ -1,0 +1,53 @@
+.btn {
+    font-family: inherit;
+    border-radius: 8px;
+    transition: all 0.2s;
+    width: 100px;
+    height: 45px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .3s;
+}
+
+.btn i {
+    transition: all 0.3s;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    left: -100%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn:hover .icon-wrapper {
+    animation: fly 0.6s ease-in-out infinite alternate;
+}
+
+.btn:hover i {
+    left: 50%;
+}
+
+.btn:hover span {
+    left: 150%;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+@keyframes fly {
+    from {
+        transform: translateY(0.1em);
+    }
+
+    to {
+        transform: translateY(-0.1em);
+    }
+}

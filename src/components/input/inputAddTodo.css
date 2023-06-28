@@ -1,0 +1,45 @@
+.textInputWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    /* max-height: 40px; */
+}
+
+.textInput::placeholder {
+    transition: opacity 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    opacity: 1;
+    user-select: none;
+    color: #B39CD0;
+}
+
+.textInputWrapper .textInput {
+    max-height: 40px;
+    background-color: transparent;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 200ms;
+    transition-property: background-color;
+    color: #eee;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 12px;
+    /* margin-left: 7%; */
+    width: 93%;
+}
+
+.textInputWrapper .textInput:focus,
+.textInputWrapper .textInput:active {
+    outline: none;
+}
+
+.textInputWrapper:focus-within .textInput::placeholder {
+    opacity: 0;
+}
+
+.btn-wrapper button{
+    border-radius: 0 !important;
+    width: 60px !important;
+    height: 40px !important;
+    border-left: 2px solid #B39CD0 !important;
+    background: transparent !important;
+}
