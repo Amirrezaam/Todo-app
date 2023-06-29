@@ -27,9 +27,11 @@ const fetchTodos = () => {
 
         let userId;
 
-        axios.get(`${process.env.REACT_APP_USER_BASE_URL}/users.json`)
+        axios.get(`${process.env.REACT_APP_USER_BASE_URL}users.json`)
             .then(res => {
-                userId = Object.keys(res.data).find(key => key == localStorage.getItem("user"));
+                if (res.data) {
+                    userId = Object.keys(res.data).find(key => key == localStorage.getItem("user"));
+                }
                 axios.get(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos.json`)
                     .then(response => {
                         dispatch(fetchTodosSuccess(response.data));
@@ -38,8 +40,9 @@ const fetchTodos = () => {
                     })
             })
             .catch(err => {
+                console.log("object");
                 dispatch(fetchUsersFailed(err.message));
-                dispatch(fetchTodosFailed(err.message))
+                dispatch(fetchTodosFailed(err.message));
             })
     }
 }
