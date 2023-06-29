@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { editTodo, fetchTodos } from '../../redux/todos/todosActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { editTodo, fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,6 +16,11 @@ export default function EditBtn({ todo, id, users }) {
 
     const editTodo = () => {
 
+        if (!editedValue.length || !editedValue.trim().length) {
+            alert("Please fill input !!!");
+            return;
+        }
+
         let updatedTodo = {
             ...todo,
             todoText: editedValue
@@ -25,11 +30,13 @@ export default function EditBtn({ todo, id, users }) {
 
         if (users) {
             userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
-        }else{
+        } else {
             alert("Please try again !!!");
             return;
         }
-        
+
+        dispatch(fetchTodosRequest());
+
         axios.put(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`, updatedTodo)
             .then(res => {
                 dispatch(fetchTodos());
@@ -37,6 +44,7 @@ export default function EditBtn({ todo, id, users }) {
                 alert("DONE !!!");
             })
             .catch(err => {
+                dispatch(fetchTodos());
                 setOpenModal(false);
                 alert("TRY AGAIN !!!");
             })
@@ -53,7 +61,6 @@ export default function EditBtn({ todo, id, users }) {
                 openModal ?
                     <div
                         className="w-full h-[100vh] fixed top-0 left-0 bg-black/50 flex items-center justify-center z-[9999]"
-                    // style={{ top: window.scrollY + "px" }}
                     >
                         <div className="bg-[#4B4453] w-[90%] md:w-[50%] lg:w-[30%] rounded-lg rounded-tr-lg p-6 relative">
                             <span className="absolute top-[-25px] left-[50%] translate-x-[-50%] w-[50px] h-[50px] rounded-full bg-inherit text-white flex items-center justify-center">
@@ -63,6 +70,7 @@ export default function EditBtn({ todo, id, users }) {
                                 className="block my-8 edit-input"
                                 placeholder="Please edit task"
                                 onChange={e => setEditedValue(e.target.value)}
+                                onKeyPress={e => { if (e.key === "Enter") { editTodo(); } }}
                             />
 
                             <div className="flex items-center justify-center">
@@ -75,7 +83,6 @@ export default function EditBtn({ todo, id, users }) {
 
                                 <Btn
                                     className="bg-[#F9F871] text-black text-base"
-                                    // onClick={() => { dispatch(editTodo(todo, editedValue)); setOpenModal(false); setReRender(prev => !prev) }}
                                     onClick={() => editTodo()}
                                     text="Edit"
                                     icon={<BorderColorIcon />}

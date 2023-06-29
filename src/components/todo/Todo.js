@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTodos, } from '../../redux/todos/todosActions';
 import 'react-calendar/dist/Calendar.css';
-import "./todo.css"
 import Task from '../task/Task';
 import CalendarBox from '../calendar box/CalendarBox';
 import FilterTodos from '../filter todos/FilterTodos';

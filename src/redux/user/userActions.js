@@ -56,5 +56,6 @@ export {
     signUpRequest,
     signUpSuccess,
     signUpFailed,
+    fetchUsersFailed,
     fetchUsers
 }

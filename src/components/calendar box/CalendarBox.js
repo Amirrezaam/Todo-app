@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Calendar from 'react-calendar'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import "./calendar.css"
 
 export default function CalendarBox({ onChange, value }) {
 

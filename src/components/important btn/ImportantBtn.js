@@ -3,7 +3,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { fetchTodos } from '../../redux/todos/todosActions';
+import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
 
 export default function ImportantBtn({ todo, id, users }) {
 
@@ -20,11 +20,13 @@ export default function ImportantBtn({ todo, id, users }) {
 
         if (users) {
             userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
-        }else{
+        } else {
             alert("Please try again !!!");
             return;
         }
-        
+
+        dispatch(fetchTodosRequest());
+
         axios.put(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`, updatedTodo)
             .then(res => {
                 dispatch(fetchTodos());

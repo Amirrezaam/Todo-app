@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Btn from '../components/btn/Btn'
-import InputAddTodo from '../components/input/InputAddTodo'
+import InputAddTodo from '../components/input add todo/InputAddTodo'
 import Todo from '../components/todo/Todo'
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';

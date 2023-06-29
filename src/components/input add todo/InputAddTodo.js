@@ -1,10 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useRef, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
-import { fetchTodos } from '../../redux/todos/todosActions';
-import { fetchUsers } from '../../redux/user/userActions';
+import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
 import Btn from '../btn/Btn';
 import "./inputAddTodo.css"
 
@@ -44,15 +43,15 @@ export default function InputAddTodo({ users }) {
         let userId;
         if (users) {
             userId = Object.keys(users).find(key => key == user);
-            console.log(userId);
+
+            dispatch(fetchTodosRequest());
+
             axios.post(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos.json`, todo)
                 .then(res => { dispatch(fetchTodos()); setValue(""); })
                 .catch(err => alert("TRY AGAIN !!!"))
         }
 
     }
-
-
 
     return (
         <div className="input-box flex justify-between items-end mt-10">

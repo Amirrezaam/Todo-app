@@ -3,7 +3,6 @@
     width: 100%;
     overflow: hidden;
     border-radius: 8px;
-    /* max-height: 40px; */
 }
 
 .textInput::placeholder {
@@ -23,7 +22,6 @@
     font-size: 18px;
     font-weight: 500;
     padding: 12px;
-    /* margin-left: 7%; */
     width: 93%;
 }
 

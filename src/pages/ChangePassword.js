@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Btn from '../components/btn/Btn';
 import { fetchUsers, signUpFailed, signUpRequest, signUpSuccess } from '../redux/user/userActions';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
@@ -14,6 +14,7 @@ export default function Signup() {
     const { users: state, error, loading } = usersState;
     const [users, setUsers] = useState(null);
 
+    const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -44,17 +45,19 @@ export default function Signup() {
         }
     }
 
-    function signUpUser() {
+    function changePassword() {
 
         if (
             !password.length ||
             !password.trim().length ||
-            !confirmPassword.length ||
-            !confirmPassword.trim().length ||
-            !passwordValidate ||
-            !confirmPasswordValidate
+            !passwordValidate
         ) {
             setPasswordValidate(false);
+            return;
+        }
+        if (!confirmPassword.trim().length ||
+            !confirmPassword.length||
+            !confirmPasswordValidate) {
             setConfirmPasswordValidate(false);
             return;
         }
@@ -82,6 +85,12 @@ export default function Signup() {
         setUsers(state);
     }, [state])
 
+    useEffect(() => {
+
+        localStorage.removeItem("user");
+
+    }, [location.pathname])
+
     return (
         <div className="container-box scr w-[90%] md:w-[60%] lg:w-[40%]">
             <h2 className="text-white font-pacifico text-4xl text-center">Change password</h2>
@@ -95,6 +104,7 @@ export default function Signup() {
                         placeholder="Enter your password . . ."
                         value={password}
                         onChange={e => passwordValidation(e)}
+                        onKeyPress={e => { if (e.key === "Enter") { changePassword(); } }}
                     />
                     <span
                         onClick={() => setShowPassword(prev => !prev)}
@@ -115,6 +125,7 @@ export default function Signup() {
                         placeholder="Confirm your password . . ."
                         value={confirmPassword}
                         onChange={e => confirmPasswordValidation(e)}
+                        onKeyPress={e => { if (e.key === "Enter") { changePassword(); } }}
                     />
                     <span
                         onClick={() => setShowConfirmPassword(prev => !prev)}
@@ -130,7 +141,7 @@ export default function Signup() {
                     <Btn
                         text="Change password"
                         className="bg-[#B39CD0] mt-5 font-bold"
-                        onClick={signUpUser}
+                        onClick={changePassword}
                         icon={<PublishedWithChangesIcon />}
                     />
                 </div>

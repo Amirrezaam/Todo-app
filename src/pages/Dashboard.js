@@ -10,11 +10,9 @@ import CloseIcon from '@mui/icons-material/Close';
 export default function Dashboard() {
 
   const usersState = useSelector(state => state.usersState);
-  const { users: state, error, loading } = usersState;
+  const { users: state } = usersState;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const [user, setUser] = useState(null);
 
   const [email, setEmail] = useState("");
   const [emailValidate, setEmailValidate] = useState(true);
@@ -88,7 +86,6 @@ export default function Dashboard() {
   useEffect(() => {
     if (state) {
       let findUser = Object.keys(state).find(key => key == localStorage.getItem("user"));
-      setUser(state[findUser]);
       setEmail(state[findUser].email);
       setName(state[findUser].name);
     }
@@ -105,7 +102,7 @@ export default function Dashboard() {
         placeholder="Enter your email . . ."
         value={email}
         onChange={e => emailValidation(e)}
-        onKeyPress={e => { if (e.key === "Enter") { } }}
+        onKeyPress={e => { if (e.key === "Enter") { editUser() } }}
       />
       {emailValidate ? null : <span className="text-[#f96d6d]">Your email is not valid</span>}
       <br />
@@ -117,7 +114,7 @@ export default function Dashboard() {
         placeholder="Enter your name . . ."
         value={name}
         onChange={e => nameValidation(e)}
-        onKeyPress={e => { if (e.key === "Enter") { } }}
+        onKeyPress={e => { if (e.key === "Enter") { editUser() } }}
       />
       {nameValidate ? null : <span className="text-[#f96d6d]">Your name must be between 3 and 20 characters</span>}
       <p className="text-white mt-7 underline text-center">

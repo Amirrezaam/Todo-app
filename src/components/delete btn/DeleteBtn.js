@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { deleteTodo, fetchTodos } from '../../redux/todos/todosActions';
+import { deleteTodo, fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,6 +22,9 @@ export default function DeleteBtn({ todo, id, users }) {
             alert("Please try again !!!");
             return;
         }
+        
+        dispatch(fetchTodosRequest());
+
         axios.delete(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`)
             .then(res => {
                 dispatch(fetchTodos());
@@ -30,6 +33,7 @@ export default function DeleteBtn({ todo, id, users }) {
             })
             .catch(err => {
                 setOpenModal(false);
+                dispatch(fetchTodos());
                 alert("TRY AGAIN !!!");
             })
     }
@@ -45,7 +49,6 @@ export default function DeleteBtn({ todo, id, users }) {
                 openModal ?
                     <div
                         className={`w-full h-[100vh] fixed top-0 left-0 bg-black/50 flex items-center justify-center z-[9999]`}
-                    // style={{ top: window.scrollY + "px" }}
                     >
                         <div className={`bg-[#4B4453] rounded-lg rounded-tr-lg p-6 relative`}>
                             <span className="absolute top-[-25px] left-[50%] translate-x-[-50%] w-[50px] h-[50px] rounded-full bg-inherit text-white flex items-center justify-center">
@@ -64,7 +67,6 @@ export default function DeleteBtn({ todo, id, users }) {
 
                                 <Btn
                                     className="bg-[#C34A36] text-white text-base"
-                                    // onClick={() => { dispatch(deleteTodo(todo)); setOpenModal(false) }}
                                     onClick={() => deleteTodo()}
                                     icon={<DeleteIcon />}
                                     text="Delete"

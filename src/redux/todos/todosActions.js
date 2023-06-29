@@ -1,4 +1,5 @@
 import axios from "axios"
+import { fetchUsersFailed } from "../user/userActions"
 
 const fetchTodosRequest = () => {
     return {
@@ -35,6 +36,10 @@ const fetchTodos = () => {
                     }).catch(err => {
                         dispatch(fetchTodosFailed(err.message))
                     })
+            })
+            .catch(err => {
+                dispatch(fetchUsersFailed(err.message));
+                dispatch(fetchTodosFailed(err.message))
             })
     }
 }

@@ -134,92 +134,94 @@ export default function Signup() {
     }, [state])
 
     return (
-        <div className="container-box scr w-[90%] md:w-[60%] lg:w-[40%]">
-            <h2 className="text-white font-pacifico text-4xl text-center">Sign up</h2>
-            <div className="w-full mt-10">
-                <label className="text-white ml-1 font-bold" htmlFor="email">Email</label>
-                <input
-                    className="input w-full mt-1"
-                    id="email"
-                    type="text"
-                    placeholder="Enter your email . . ."
-                    value={email}
-                    onChange={e => emailValidation(e)}
-                    onKeyPress={e => { if (e.key === "Enter") { signUpUser(); } }}
-                />
-                {emailValidate ? null : <span className="text-[#f96d6d]">Your email is not valid</span>}
-                <br />
-                <label className="text-white ml-1 font-bold mt-5 inline-block" htmlFor="name">Name</label>
-                <input
-                    className="input w-full mt-1"
-                    id="name"
-                    type="text"
-                    placeholder="Enter your name . . ."
-                    value={name}
-                    onChange={e => nameValidation(e)}
-                    onKeyPress={e => { if (e.key === "Enter") { signUpUser(); } }}
-                />
-                {nameValidate ? null : <span className="text-[#f96d6d]">Your name must be between 3 and 20 characters</span>}
-                <br />
-                <label className="text-white ml-1 font-bold mt-5 inline-block" htmlFor="password">Password</label>
-                <div className="relative">
+        <>
+            <div className="container-box scr w-[90%] md:w-[60%] lg:w-[40%]">
+                <h2 className="text-white font-pacifico text-4xl text-center">Sign up</h2>
+                <div className="w-full mt-10">
+                    <label className="text-white ml-1 font-bold" htmlFor="email">Email</label>
                     <input
                         className="input w-full mt-1"
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password . . ."
-                        value={password}
-                        onChange={e => passwordValidation(e)}
+                        id="email"
+                        type="text"
+                        placeholder="Enter your email . . ."
+                        value={email}
+                        onChange={e => emailValidation(e)}
                         onKeyPress={e => { if (e.key === "Enter") { signUpUser(); } }}
                     />
-                    <span
-                        onClick={() => setShowPassword(prev => !prev)}
-                        className="cursor-pointer text-white absolute top-[50%] translate-y-[-50%] right-2">
-                        {
-                            showPassword ? <VisibilityOffIcon /> : <RemoveRedEyeIcon />
-                        }
-                    </span>
-                </div>
-                {passwordValidate ? null : <span className="text-[#f96d6d]">Your password must be at least 8 characters long and include letters, numbers and special characters</span>}
-                <br />
-                <label
-                    className="text-white ml-1 font-bold inline-block"
-                    htmlFor="confirm-password"
-                >
-                    Confirm Password
-                </label>
-                <div className="relative">
+                    {emailValidate ? null : <span className="text-[#f96d6d]">Your email is not valid</span>}
+                    <br />
+                    <label className="text-white ml-1 font-bold mt-5 inline-block" htmlFor="name">Name</label>
                     <input
                         className="input w-full mt-1"
-                        id="confirm-password"
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm your password . . ."
-                        value={confirmPassword}
-                        onChange={e => confirmPasswordValidation(e)}
+                        id="name"
+                        type="text"
+                        placeholder="Enter your name . . ."
+                        value={name}
+                        onChange={e => nameValidation(e)}
                         onKeyPress={e => { if (e.key === "Enter") { signUpUser(); } }}
                     />
-                    <span
-                        onClick={() => setShowConfirmPassword(prev => !prev)}
-                        className="cursor-pointer text-white absolute top-[50%] translate-y-[-50%] right-2">
-                        {
-                            showConfirmPassword ? <VisibilityOffIcon /> : <RemoveRedEyeIcon />
-                        }
-                    </span>
+                    {nameValidate ? null : <span className="text-[#f96d6d]">Your name must be between 3 and 20 characters</span>}
+                    <br />
+                    <label className="text-white ml-1 font-bold mt-5 inline-block" htmlFor="password">Password</label>
+                    <div className="relative">
+                        <input
+                            className="input w-full mt-1"
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password . . ."
+                            value={password}
+                            onChange={e => passwordValidation(e)}
+                            onKeyPress={e => { if (e.key === "Enter") { signUpUser(); } }}
+                        />
+                        <span
+                            onClick={() => setShowPassword(prev => !prev)}
+                            className="cursor-pointer text-white absolute top-[50%] translate-y-[-50%] right-2">
+                            {
+                                showPassword ? <VisibilityOffIcon /> : <RemoveRedEyeIcon />
+                            }
+                        </span>
+                    </div>
+                    {passwordValidate ? null : <span className="text-[#f96d6d]">Your password must be at least 8 characters long and include letters, numbers and special characters</span>}
+                    <br />
+                    <label
+                        className="text-white ml-1 font-bold inline-block"
+                        htmlFor="confirm-password"
+                    >
+                        Confirm Password
+                    </label>
+                    <div className="relative">
+                        <input
+                            className="input w-full mt-1"
+                            id="confirm-password"
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="Confirm your password . . ."
+                            value={confirmPassword}
+                            onChange={e => confirmPasswordValidation(e)}
+                            onKeyPress={e => { if (e.key === "Enter") { signUpUser(); } }}
+                        />
+                        <span
+                            onClick={() => setShowConfirmPassword(prev => !prev)}
+                            className="cursor-pointer text-white absolute top-[50%] translate-y-[-50%] right-2">
+                            {
+                                showConfirmPassword ? <VisibilityOffIcon /> : <RemoveRedEyeIcon />
+                            }
+                        </span>
+                    </div>
+                    {confirmPasswordValidate ? null : <span className="text-[#f96d6d]">It is not equal to password</span>}
+                    <br />
+                    <div className="btn-container w-full flex justify-center">
+                        <Btn
+                            text="Sign up"
+                            className="bg-[#B39CD0] mt-3 font-bold"
+                            onClick={signUpUser}
+                            icon={<HowToRegIcon />}
+                        />
+                    </div>
+                    <p className="text-white text-center mt-3">
+                        You already have an account? <ArrowForwardIcon /> <NavLink className="underline" to="/login">Login</NavLink>
+                    </p>
                 </div>
-                {confirmPasswordValidate ? null : <span className="text-[#f96d6d]">It is not equal to password</span>}
-                <br />
-                <div className="btn-container w-full flex justify-center">
-                    <Btn
-                        text="Sign up"
-                        className="bg-[#B39CD0] mt-3 font-bold"
-                        onClick={signUpUser}
-                        icon={<HowToRegIcon />}
-                    />
-                </div>
-                <p className="text-white text-center mt-3">
-                    You already have an account? <ArrowForwardIcon /> <NavLink className="underline" to="/login">Login</NavLink>
-                </p>
-            </div>
-        </div >
+            </div >
+        </>
     )
 }
