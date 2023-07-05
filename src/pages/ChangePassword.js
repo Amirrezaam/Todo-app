@@ -1,98 +1,60 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Btn from '../components/btn/Btn';
-import { fetchUsers, signUpFailed, signUpRequest, signUpSuccess } from '../redux/user/userActions';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { confirmPasswordValidation, valueValidation } from '../helper/validation';
+import { updateUser } from '../service/api';
 
-export default function Signup() {
+function ChangePassword({ users, setReRender }) {
 
-    const usersState = useSelector(state => state.usersState);
-    const { users: state, error, loading } = usersState;
-    const [users, setUsers] = useState(null);
-
-    const location = useLocation();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
-    const [password, setPassword] = useState("");
-    const [passwordValidate, setPasswordValidate] = useState(true);
+    const [data, setData] = useState({
+        password: "",
+        confirmPassword: ""
+    });
 
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [confirmPasswordValidate, setConfirmPasswordValidate] = useState(true);
+    const [errorData, setErrorData] = useState({});
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const passwordValidation = e => {
-        setPassword(e.target.value);
-        if (e.target.value.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/) || !e.target.value.length) {
-            setPasswordValidate(true);
-        } else {
-            setPasswordValidate(false);
-        }
-    }
-
-    const confirmPasswordValidation = e => {
-        setConfirmPassword(e.target.value);
-        if (e.target.value == password || !e.target.value.length) {
-            setConfirmPasswordValidate(true);
-        } else {
-            setConfirmPasswordValidate(false);
-        }
-    }
-
     function changePassword() {
 
-        if (
-            !password.length ||
-            !password.trim().length ||
-            !passwordValidate
-        ) {
-            setPasswordValidate(false);
-            return;
-        }
-        if (!confirmPassword.trim().length ||
-            !confirmPassword.length||
-            !confirmPasswordValidate) {
-            setConfirmPasswordValidate(false);
+        if (Object.values(errorData).find(val => val === false) === false ||
+            Object.values(data).filter(val => !val.length)?.length ||
+            !Object.keys(errorData).length) {
+            alert("Please check for errors");
             return;
         }
 
-        const userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
+        const userId = Object.keys(users).find(key => key === localStorage.getItem("user"));
 
         let user = {
             ...users[userId],
-            password,
+            password: data.password,
         }
 
-        axios.put(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}.json`, user)
-            .then(res => { localStorage.removeItem("user"); navigate("/login") })
+        updateUser(userId, user)
+            .then(res => { localStorage.removeItem("user"); navigate("/login"); setReRender(prev => !prev) })
             .catch(err => console.log(err))
+
     }
 
     useEffect(() => {
-        dispatch(fetchUsers())
-        if (!localStorage.getItem("user")) {
-            navigate("/");
+        let userId = localStorage.getItem("user");
+
+        if (userId) {
+            if (!Object.keys(users).find(key => key === userId)) {
+                navigate("/");
+            }
         }
     }, [])
 
-    useEffect(() => {
-        setUsers(state);
-    }, [state])
-
-    useEffect(() => {
-
-        localStorage.removeItem("user");
-
-    }, [location.pathname])
-
     return (
-        <div className="container-box scr w-[90%] md:w-[60%] lg:w-[40%]">
+        <>
             <h2 className="text-white font-pacifico text-4xl text-center">Change password</h2>
             <div className="w-full mt-10">
                 <label className="text-white ml-1 font-bold mt-5 inline-block" htmlFor="password">Password</label>
@@ -102,8 +64,8 @@ export default function Signup() {
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password . . ."
-                        value={password}
-                        onChange={e => passwordValidation(e)}
+                        value={data.password}
+                        onChange={e => { setData({ ...data, password: e.target.value }); setErrorData({ ...errorData, password: valueValidation(e.target.value, "password") }); }}
                         onKeyPress={e => { if (e.key === "Enter") { changePassword(); } }}
                     />
                     <span
@@ -114,7 +76,7 @@ export default function Signup() {
                         }
                     </span>
                 </div>
-                {passwordValidate ? null : <span className="text-[#f96d6d]">Your password must be at least 8 characters long and include letters, numbers and special characters</span>}
+                {errorData.password === false ? <span className="text-[#f96d6d]">Your password must be at least 8 characters long and include letters, numbers and special characters</span> : null}
                 <br />
                 <label className="text-white ml-1 font-bold inline-block mt-5" htmlFor="confirm-password">Confirm Password</label>
                 <div className="relative">
@@ -123,8 +85,8 @@ export default function Signup() {
                         id="confirm-password"
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your password . . ."
-                        value={confirmPassword}
-                        onChange={e => confirmPasswordValidation(e)}
+                        value={data.confirmPassword}
+                        onChange={e => { setData({ ...data, confirmPassword: e.target.value }); setErrorData({ ...errorData, confirmPassword: confirmPasswordValidation(e.target.value, data.password) }); }}
                         onKeyPress={e => { if (e.key === "Enter") { changePassword(); } }}
                     />
                     <span
@@ -135,7 +97,7 @@ export default function Signup() {
                         }
                     </span>
                 </div>
-                {confirmPasswordValidate ? null : <span className="text-[#f96d6d]">It is not equal to password</span>}
+                {errorData.confirmPassword === false ? <span className="text-[#f96d6d]">It is not equal to password</span> : null}
                 <br />
                 <div className="btn-container w-full flex justify-center">
                     <Btn
@@ -146,6 +108,8 @@ export default function Signup() {
                     />
                 </div>
             </div>
-        </div >
+        </>
     )
 }
+
+export default ChangePassword;

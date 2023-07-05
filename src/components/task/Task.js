@@ -1,7 +1,7 @@
-import axios from 'axios'
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
+import { updateTodo } from '../../service/api';
 import DeleteBtn from '../delete btn/DeleteBtn'
 import EditBtn from '../edit btn/EditBtn'
 import ImportantBtn from '../important btn/ImportantBtn';
@@ -17,13 +17,11 @@ export default function Task({ todo, id, i, users }) {
             completed: !todo.completed
         }
 
-        let userId;
-
-        userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
+        let userId = Object.keys(users).find(key => key === localStorage.getItem("user"));
 
         dispatch(fetchTodosRequest());
 
-        axios.put(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`, updatedTodo)
+        updateTodo(userId, id, updatedTodo)
             .then(res => {
                 dispatch(fetchTodos());
             })

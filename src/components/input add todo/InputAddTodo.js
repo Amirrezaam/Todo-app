@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
+import { createTodo } from '../../service/api';
 import Btn from '../btn/Btn';
 import "./inputAddTodo.css"
 
@@ -16,12 +16,11 @@ export default function InputAddTodo({ users }) {
     const ref = useRef();
     const [value, setValue] = useState("");
 
-    function createTodo() {
-
-        const user = localStorage.getItem("user");
+    function create() {
+        const user = Object.keys(users).find(key => key === localStorage.getItem("user"));
 
         if (!user) {
-            navigate("/register");
+            navigate("/login");
             return;
         }
 
@@ -40,17 +39,11 @@ export default function InputAddTodo({ users }) {
             date: new Date()
         }
 
-        let userId;
-        if (users) {
-            userId = Object.keys(users).find(key => key == user);
+        dispatch(fetchTodosRequest());
 
-            dispatch(fetchTodosRequest());
-
-            axios.post(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos.json`, todo)
-                .then(res => { dispatch(fetchTodos()); setValue(""); })
-                .catch(err => alert("TRY AGAIN !!!"))
-        }
-
+        createTodo(user, todo)
+            .then(res => { dispatch(fetchTodos()); setValue(""); })
+            .catch(err => alert("TRY AGAIN !!!"))
     }
 
     return (
@@ -70,12 +63,12 @@ export default function InputAddTodo({ users }) {
                     className="textInput"
                     maxLength={maxLength}
                     onChange={e => setValue(e.target.value)}
-                    onKeyPress={e => { if (e.key === "Enter") { createTodo(); setValue("") } }}
+                    onKeyPress={e => { if (e.key === "Enter") { create(); } }}
                 />
                 <div className="btn-wrapper absolute top-0 right-0">
                     <Btn
                         className="text-white text-base"
-                        onClick={createTodo}
+                        onClick={create}
                         icon="+"
                         text="Add"
                     />

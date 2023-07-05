@@ -4,6 +4,7 @@ import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
+import { updateTodo } from '../../service/api';
 
 export default function ImportantBtn({ todo, id, users }) {
 
@@ -16,18 +17,11 @@ export default function ImportantBtn({ todo, id, users }) {
             important: !todo.important
         }
 
-        let userId;
-
-        if (users) {
-            userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
-        } else {
-            alert("Please try again !!!");
-            return;
-        }
+        let userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
 
         dispatch(fetchTodosRequest());
 
-        axios.put(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`, updatedTodo)
+        updateTodo(userId, id, updatedTodo)
             .then(res => {
                 dispatch(fetchTodos());
             })

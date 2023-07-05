@@ -40,7 +40,6 @@ const fetchTodos = () => {
                     })
             })
             .catch(err => {
-                console.log("object");
                 dispatch(fetchUsersFailed(err.message));
                 dispatch(fetchTodosFailed(err.message));
             })

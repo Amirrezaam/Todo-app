@@ -11,17 +11,12 @@ import ReplayIcon from '@mui/icons-material/Replay';
 export default function Todo({ users, username }) {
 
     const { todos: state, loading, error } = useSelector(state => state.todosState);
-    console.log("state => ", state);
     const dispatch = useDispatch();
 
     const [value, onChange] = useState(new Date());
     const [todos, setTodos] = useState(null);
     const [searchValue, setSearchValue] = useState("");
     const [reRender, setReRender] = useState(false);
-
-    useEffect(() => {
-        setTodos(state);
-    }, [state])
 
     useEffect(() => {
         dispatch(fetchTodos())
@@ -66,7 +61,7 @@ export default function Todo({ users, username }) {
                                 Object.keys(todos)
                                     .filter(key => todos[key]?.todoText?.includes(searchValue))
                                     .filter(key =>
-                                        new Date(todos[key].date).toLocaleDateString() == value.toLocaleDateString()
+                                        new Date(todos[key].date).toLocaleDateString() === value.toLocaleDateString()
                                     )
                                     .map((key, i) =>
                                         <Task key={key} users={users} todo={todos[key]} id={key} i={i} />

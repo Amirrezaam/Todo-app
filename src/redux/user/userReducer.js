@@ -2,6 +2,7 @@ const initState = {
     loading: false,
     users: null,
     error: null,
+    promptInstall: null
 }
 
 const userReducer = (state = initState, action) => {
@@ -35,6 +36,11 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload,
+            }
+        case "INSTALL_PROMPT":
+            return{
+                ...state,
+                promptInstall: action.payload
             }
         default:
             return state;

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { editTodo, fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
+import { useDispatch } from 'react-redux';
+import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CloseIcon from '@mui/icons-material/Close';
-import "./editBtn.css"
 import Btn from '../btn/Btn';
-import axios from 'axios';
+import { updateTodo } from '../../service/api';
+import "./editBtn.css"
 
 export default function EditBtn({ todo, id, users }) {
 
@@ -26,18 +26,11 @@ export default function EditBtn({ todo, id, users }) {
             todoText: editedValue
         }
 
-        let userId;
-
-        if (users) {
-            userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
-        } else {
-            alert("Please try again !!!");
-            return;
-        }
+        let userId = Object.keys(users).find(key => key === localStorage.getItem("user"));
 
         dispatch(fetchTodosRequest());
 
-        axios.put(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`, updatedTodo)
+        updateTodo(userId, id, updatedTodo)
             .then(res => {
                 dispatch(fetchTodos());
                 setOpenModal(false);

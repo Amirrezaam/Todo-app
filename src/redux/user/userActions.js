@@ -40,6 +40,13 @@ const fetchUsersFailed = err => {
     }
 }
 
+const installPrompt = event => {
+    return {
+        type: "INSTALL_PROMPT",
+        payload: event
+    }
+}
+
 const fetchUsers = () => {
     return (dispatch) => {
 
@@ -47,6 +54,7 @@ const fetchUsers = () => {
 
         axios.get(`${process.env.REACT_APP_USER_BASE_URL}/users.json`)
             .then(res => {
+                console.log("res => ", res.data);
                 dispatch(fetchUsersSuccess(res.data))
             }).catch(err => dispatch(fetchUsersFailed(err.message)))
     }
@@ -57,5 +65,6 @@ export {
     signUpSuccess,
     signUpFailed,
     fetchUsersFailed,
-    fetchUsers
+    fetchUsers,
+    installPrompt
 }

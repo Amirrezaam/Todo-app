@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { deleteTodo, fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
+import { fetchTodos, fetchTodosRequest } from '../../redux/todos/todosActions';
+import { deleteTodo } from '../../service/api';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CloseIcon from '@mui/icons-material/Close';
 import Btn from '../btn/Btn';
-import axios from 'axios';
 
 export default function DeleteBtn({ todo, id, users }) {
 
     const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
 
-    const deleteTodo = () => {
+    const deleteHandler = () => {
 
-        let userId;
+        let userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
 
-        if (users) {
-            userId = Object.keys(users).find(key => key == localStorage.getItem("user"));
-        }else{
-            alert("Please try again !!!");
-            return;
-        }
-        
         dispatch(fetchTodosRequest());
 
-        axios.delete(`${process.env.REACT_APP_USER_BASE_URL}/users/${userId}/todos/${id}.json`)
+        deleteTodo(userId, id)
             .then(res => {
                 dispatch(fetchTodos());
                 setOpenModal(false);
@@ -67,7 +60,7 @@ export default function DeleteBtn({ todo, id, users }) {
 
                                 <Btn
                                     className="bg-[#C34A36] text-white text-base"
-                                    onClick={() => deleteTodo()}
+                                    onClick={() => deleteHandler()}
                                     icon={<DeleteIcon />}
                                     text="Delete"
                                 />

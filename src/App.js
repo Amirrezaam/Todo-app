@@ -1,19 +1,14 @@
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import PasswordRecovery from "./pages/PasswordRecovery";
-import ChangePassword from './pages/ChangePassword';
-import Dashboard from './pages/Dashboard';
-import Error from './pages/Error';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './router/Router';
 
 function App() {
 
-  const body = document.body;
-
   window.onmousemove = function (e) {
+
+    const body = document.body;
+
     let x = e.clientX;
     let y = e.clientY;
 
@@ -24,15 +19,7 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/password-recovery" element={<PasswordRecovery />} />
-          <Route path="/register" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
+        <Router />
       </BrowserRouter>
     </Provider>
   );
