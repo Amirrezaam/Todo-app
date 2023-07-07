@@ -10,7 +10,7 @@ import "./editBtn.css"
 
 export default function EditBtn({ todo, id, users }) {
 
-    const [editedValue, setEditedValue] = useState("");
+    const [editedValue, setEditedValue] = useState(todo.todoText);
     const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
 
@@ -62,6 +62,7 @@ export default function EditBtn({ todo, id, users }) {
                             <input
                                 className="block my-8 edit-input"
                                 placeholder="Please edit task"
+                                value={editedValue}
                                 onChange={e => setEditedValue(e.target.value)}
                                 onKeyPress={e => { if (e.key === "Enter") { editTodo(); } }}
                             />
