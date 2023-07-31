@@ -17,7 +17,7 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state,
                 loading: false,
-                users: action.payload,
+                users: action.payload || [],
                 error: null
             }
         case "SIGN_UP_SUCCESS":

@@ -52,7 +52,7 @@ const fetchUsers = () => {
 
         dispatch(fetchUsersRequest());
 
-        axios.get(`${process.env.REACT_APP_USER_BASE_URL}/users.json`)
+        axios.get(`${process.env.REACT_APP_USER_BASE_URL}users.json`)
             .then(res => {
                 console.log("res => ", res.data);
                 dispatch(fetchUsersSuccess(res.data))
